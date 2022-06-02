@@ -1,4 +1,4 @@
-# yummy plan started
+# yummy started
 
 ## 数据库事务特性
 * 原子性
