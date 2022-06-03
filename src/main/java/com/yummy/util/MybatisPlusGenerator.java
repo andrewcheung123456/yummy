@@ -2,17 +2,27 @@ package com.yummy.util;
 
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.core.exceptions.MybatisPlusException;
+import com.baomidou.mybatisplus.core.toolkit.StringPool;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
-import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
-import com.baomidou.mybatisplus.generator.config.GlobalConfig;
-import com.baomidou.mybatisplus.generator.config.PackageConfig;
-import com.baomidou.mybatisplus.generator.config.StrategyConfig;
+import com.baomidou.mybatisplus.generator.InjectionConfig;
+import com.baomidou.mybatisplus.generator.config.*;
+import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.DateType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 public class MybatisPlusGenerator {
 
     public static void main(String[] args) {
+
+        //控制台输入
+        scanner();
+
         //1. 全局配置
         GlobalConfig config = new GlobalConfig();
         // 作者
@@ -66,15 +76,55 @@ public class MybatisPlusGenerator {
                 .setEntity("model")
                 .setXml("mapper");
 
+        // 自定义配置
+        InjectionConfig cfg = new InjectionConfig() {
+            @Override
+            public void initMap() {
+                // to do nothing
+            }
+        };
+
+        // 如果模板引擎是 freemarker
+        //String templatePath = "/templates/mapper.xml.ftl";
+        // 如果模板引擎是 velocity
+         String templatePath = "/templates/mapper.xml.vm";
+
+        // 自定义输出配置
+        List<FileOutConfig> focList = new ArrayList<>();
+        // 自定义配置会被优先输出
+        focList.add(new FileOutConfig(templatePath) {
+            @Override
+            public String outputFile(TableInfo tableInfo) {
+                return "D:\\generator\\".concat("\\src\\main\\resources\\mapper\\")
+                        .concat(tableInfo.getEntityName()).concat("Mapper").concat(StringPool.DOT_XML);
+            }
+        });
+        cfg.setFileOutConfigList(focList);
+
         //5. 整合配置
-        AutoGenerator ag = new AutoGenerator();
-        ag.setGlobalConfig(config)
+        AutoGenerator autoGenerator = new AutoGenerator();
+        autoGenerator.setCfg(cfg)
+                .setGlobalConfig(config)
                 .setDataSource(dsConfig)
                 .setStrategy(stConfig)
                 .setPackageInfo(pkConfig);
 
         //6. 执行操作
-        ag.execute();
+        autoGenerator.execute();
         System.out.println("======= 代码自动生成完毕！ ========");
+    }
+
+    public static String scanner() {
+        Scanner scanner = new Scanner(System.in);
+        StringBuilder help = new StringBuilder();
+        help.append("请输入表名：");
+        System.out.println(help);
+        if (scanner.hasNext()) {
+            String ipt = scanner.next();
+            if (StringUtils.isNotBlank(ipt)) {
+                return ipt;
+            }
+        }
+        throw new MybatisPlusException("请输入正确的表名！");
     }
 }
