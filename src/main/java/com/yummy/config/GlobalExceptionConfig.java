@@ -1,5 +1,7 @@
-package com.yummy.common;
+package com.yummy.config;
 
+import com.yummy.common.ApiResponse;
+import com.yummy.common.CustomException;
 import com.yummy.enums.ExceptionEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -11,7 +13,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  */
 @Slf4j
 @RestControllerAdvice
-public class GlobalExceptionHandler {
+public class GlobalExceptionConfig {
 
     /**
      * 业务异常处理
