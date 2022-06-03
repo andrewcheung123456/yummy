@@ -9,7 +9,7 @@ public enum ExceptionEnum {
     NOT_FOUND(404, "请求的资源找不到!"),
     INTERNAL_SERVER_ERROR(500, "服务器内部错误!"),
     SERVICE_UNAVAILABLE(503, "服务器正忙，请稍后再试!"),
-    UNKNOWN(999, "服务器正忙，请稍后再试!"),
+    UNKNOWN(999, "未知异常"),
     ;
 
     private Integer code;

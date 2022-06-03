@@ -2,6 +2,8 @@ package com.yummy.controller;
 
 
 import com.yummy.common.ApiResponse;
+import com.yummy.common.CustomException;
+import com.yummy.enums.ExceptionEnum;
 import com.yummy.model.User;
 import com.yummy.service.UserService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +32,11 @@ public class UserController {
     @GetMapping("/{id}")
     public ApiResponse<User> get(@PathVariable("id") Integer id){
         return ApiResponse.success(userService.getById(id));
+    }
+
+    @GetMapping("/error")
+    public void error(){
+        throw new CustomException(ExceptionEnum.UNKNOWN);
     }
 }
 
