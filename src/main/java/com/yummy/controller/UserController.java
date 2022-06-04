@@ -31,12 +31,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ApiResponse<User> get(@PathVariable("id") Integer id){
-        return ApiResponse.success(userService.getById(id));
-    }
-
-    @GetMapping("/error")
-    public void error(){
-        throw new CustomException(ExceptionEnum.UNKNOWN);
+        return ApiResponse.success(userService.getUser(id));
     }
 }
 
